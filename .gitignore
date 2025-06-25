@@ -1,0 +1,61 @@
+# ===================================================================
+# =         Kapsamlı Spring Boot / Maven .gitignore Şablonu         =
+# ===================================================================
+
+# Build Çıktıları ve Sistemleri
+# Derleme sonucu oluşan ve repoya eklenmemesi gereken klasörler.
+/target/
+/build/
+/.mvn/
+
+# Karmaşık projeler için istisna kuralları (isteğiniz üzerine eklendi)
+# Bu kurallar, ana ignore kurallarını geçersiz kılar.
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+
+# Log Dosyaları
+# Uygulama çalışırken üretilen ve sürekli değişen loglar.
+*.log
+*.log.*
+
+
+# IDE ve Editör Ayar Dosyaları
+# Her geliştiricinin kendi makinesine özel olan ayar dosyaları.
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.iws
+*.ipr
+
+### Eclipse / Spring Tool Suite (STS) ###
+.project
+.classpath
+.factorypath
+.settings/
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+
+# İşletim Sistemi Özel Dosyaları
+# Farklı işletim sistemlerinin oluşturduğu gereksiz dosyalar.
+.DS_Store
+Thumbs.db
+
+
+# Diğer
+# Projeye özel görmezden gelinecek diğer dosyalar.
+HELP.md
