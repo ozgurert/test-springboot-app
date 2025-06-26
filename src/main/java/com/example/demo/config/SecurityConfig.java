@@ -41,7 +41,9 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/**",      // Tüm kimlik doğrulama işlemleri
                                 "/uploads/**",       // Kullanıcıların yüklediği profil fotoğrafları
-                                "/images/**"         // YENİ EKLENEN KURAL: Varsayılan avatar gibi statik görsellere erişim için
+                                "/images/**",        // YENİ EKLENEN KURAL: Varsayılan avatar gibi statik görsellere erişim için
+                                "/",
+                                "/index.html"
                         ).permitAll()
                         // Yukarıdakiler dışındaki DİĞER TÜM isteklerin kimlik doğrulaması gerektirdiğini belirt.
                         .anyRequest().authenticated()
