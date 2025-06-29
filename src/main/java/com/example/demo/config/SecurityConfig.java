@@ -1,5 +1,12 @@
 package com.example.demo.config;
 
+import com.example.demo.model.ERole;
+import com.example.demo.model.Role;
+import com.example.demo.model.User;
+import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.UserRepository;
+
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +23,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.Set;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -37,15 +45,16 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(withDefaults()) // Aşağıdaki corsConfigurationSource() bean'ini kullanır
                 .authorizeHttpRequests(auth -> auth
-                        // Herkese açık olacak yolları listeliyoruz.
                         .requestMatchers(
                                 "/api/auth/**",      // Tüm kimlik doğrulama işlemleri
                                 "/uploads/**",       // Kullanıcıların yüklediği profil fotoğrafları
-                                "/images/**",        // YENİ EKLENEN KURAL: Varsayılan avatar gibi statik görsellere erişim için
+                                "/images/**",        // Varsayılan avatar gibi statik görsellere erişim için
                                 "/",
                                 "/index.html"
                         ).permitAll()
-                        // Yukarıdakiler dışındaki DİĞER TÜM isteklerin kimlik doğrulaması gerektirdiğini belirt.
+
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/me").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -63,5 +72,27 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public CommandLineRunner commandLineRunner(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        return args -> {
+            // Rolleri oluştur
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER).orElseGet(() -> roleRepository.save(new Role(ERole.ROLE_USER)));
+            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN).orElseGet(() -> roleRepository.save(new Role(ERole.ROLE_ADMIN)));
+
+            // Admin kullanıcısı yoksa oluştur
+            if (userRepository.findByUsername("admin").isEmpty()) {
+                User adminUser = new User();
+                adminUser.setUsername("admin");
+                adminUser.setPassword(passwordEncoder.encode("admin123")); // Gerçek projede bunu kullanmayın!
+                adminUser.setEmail("admin@example.com");
+                adminUser.setFirstName("Admin");
+                adminUser.setLastName("User");
+                adminUser.setRoles(Set.of(userRole, adminRole)); // Hem USER hem ADMIN rolleri
+                userRepository.save(adminUser);
+                System.out.println("Test için 'admin' kullanıcısı oluşturuldu. Şifre: admin123");
+            }
+        };
     }
 }

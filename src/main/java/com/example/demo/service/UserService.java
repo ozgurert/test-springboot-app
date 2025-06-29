@@ -5,7 +5,10 @@ import com.example.demo.dto.UserDto;
 import com.example.demo.dto.UserViewDto;
 import com.example.demo.dto.ProfileUpdateDto;
 import com.example.demo.model.User;
+import com.example.demo.model.Role;
+import com.example.demo.model.ERole;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.request.ForgotPasswordRequest;
 import com.example.demo.request.ResetPasswordRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,6 +48,7 @@ public class UserService implements UserDetailsService {
 
     // --- DEPENDENCIES ---
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final JavaMailSender mailSender;
@@ -52,8 +56,9 @@ public class UserService implements UserDetailsService {
     private final Path rootLocation = Paths.get("uploads");
 
     @Autowired
-    public UserService(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder, JwtService jwtService, JavaMailSender mailSender) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, @Lazy PasswordEncoder passwordEncoder, JwtService jwtService, JavaMailSender mailSender) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository; // <-- YENİ EKLENEN SATIR
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.mailSender = mailSender;
@@ -88,6 +93,11 @@ public class UserService implements UserDetailsService {
         user.setDateOfBirth(userDto.getDateOfBirth());
         user.setPhoneNumber(userDto.getPhoneNumber());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Hata: Veritabanında ROLE_USER rolü bulunamadı."));
+        user.getRoles().add(userRole);
+
         String defaultVisibilitySettings = "{\"showEmail\": false, \"showPhoneNumber\": false, \"showGender\": false, \"showDateOfBirth\": false}";
         user.setVisibilitySettings(defaultVisibilitySettings);
         user.setBio("Merhaba! Bu benim yeni profilim.");
