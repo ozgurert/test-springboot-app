@@ -6,7 +6,6 @@
 # Derleme sonucu oluşan ve repoya eklenmemesi gereken klasörler.
 /target/
 /build/
-/.mvn/
 
 # Karmaşık projeler için istisna kuralları (isteğiniz üzerine eklendi)
 # Bu kurallar, ana ignore kurallarını geçersiz kılar.
