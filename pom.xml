@@ -109,13 +109,13 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>com.azure.spring</groupId>
-			<artifactId>azure-spring-boot-starter-storage</artifactId>
+			<artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
 		</dependency>
 	</dependencies>
 
-	<!-- HATA ÇÖZÜMÜ İÇİN EKLENDİ: Maven'e ana depoyu açıkça belirtiyoruz. -->
 	<repositories>
 		<repository>
 			<id>central</id>
