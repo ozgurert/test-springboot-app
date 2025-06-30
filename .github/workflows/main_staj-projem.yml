@@ -24,7 +24,8 @@ jobs:
           java-version: '17'
           distribution: 'microsoft'
 
-      - name: Build with Maven
+      # DÜZELTME: Build with Maven adımını testleri atlayacak şekilde güncelledik.
+      - name: Build with Maven and skip tests
         run: mvn clean install -DskipTests
 
       - name: Upload artifact for deployment job
@@ -39,7 +40,7 @@ jobs:
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
-  
+    
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
@@ -60,4 +61,3 @@ jobs:
           app-name: 'staj-projem'
           slot-name: 'Production'
           package: '*.jar'
-          
