@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map; // Gerekli import
+import java.util.Map;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
+
+@CrossOrigin(origins = "https://staj-projem-frontend.polandcentral.azurewebsites.net")
 @RestController
 @RequestMapping("/api/auth")
 public class PasswordResetController {

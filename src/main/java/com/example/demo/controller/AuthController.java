@@ -6,11 +6,14 @@ import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Map;
 
+@CrossOrigin(origins = "https://staj-projem-frontend.polandcentral.azurewebsites.net")
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:4200")
 public class AuthController {
 
     private final UserService userService;

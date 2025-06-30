@@ -11,6 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RestController;
+
 /**
  * Kullanıcı işlemleri için REST API denetleyicisi.
  * Bu sınıf "Thin Controller" prensibine uygun olarak tasarlanmıştır.
@@ -18,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://staj-projem-frontend.polandcentral.azurewebsites.net")
 public class UserController {
 
     private final UserService userService;
