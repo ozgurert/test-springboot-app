@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "https://staj-projem-frontend.polandcentral.azurewebsites.net")
+@CrossOrigin(origins = "https://staj-projem-frontend-b7gufmg4bvcgcxbu.polandcentral-01.azurewebsites.net")
 public class UserController {
 
     private final UserService userService;

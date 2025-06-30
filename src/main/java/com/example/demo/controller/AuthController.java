@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "https://staj-projem-frontend.polandcentral.azurewebsites.net")
+@CrossOrigin(origins = "https://staj-projem-frontend-b7gufmg4bvcgcxbu.polandcentral-01.azurewebsites.net")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {

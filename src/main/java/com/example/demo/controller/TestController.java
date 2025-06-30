@@ -8,7 +8,7 @@ import java.security.Principal;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "https://staj-projem-frontend.polandcentral.azurewebsites.net")
+@CrossOrigin(origins = "https://staj-projem-frontend-b7gufmg4bvcgcxbu.polandcentral-01.azurewebsites.net")
 @RestController
 @RequestMapping("/api")
 public class TestController {
