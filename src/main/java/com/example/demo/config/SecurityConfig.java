@@ -43,12 +43,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(withDefaults()) // Aşağıdaki corsConfigurationSource() bean'ini kullanır
+                .cors(withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/auth/**",      // Tüm kimlik doğrulama işlemleri
-                                "/uploads/**",       // Kullanıcıların yüklediği profil fotoğrafları
-                                "/images/**",        // Varsayılan avatar gibi statik görsellere erişim için
+                                "/api/auth/**",
+                                "/uploads/**",
+                                "/images/**",
                                 "/",
                                 "/index.html"
                         ).permitAll()
@@ -66,9 +66,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:4200",
+                "https://staj-projem-frontend-b7gufmg4bvcgcxbu.polandcentral-01.azurewebsites.net"
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Accept"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

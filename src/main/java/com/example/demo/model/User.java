@@ -61,20 +61,14 @@ public class User implements UserDetails { // Spring Security için UserDetails 
     @Column(name = "reset_password_token_expiry")
     private LocalDateTime resetPasswordTokenExpiry;
 
-    @ManyToMany(fetch = FetchType.EAGER) // EAGER: Kullanıcı çekildiğinde rolleri de hemen yüklensin.
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    // =================================================================
-    // UserDetails Arayüzü İçin Gerekli Olan Metotlar
-    // =================================================================
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // <-- DEĞİŞİKLİK: Artık rolleri statik olarak vermek yerine,
-        // kullanıcının 'roles' set'inden dinamik olarak alıyoruz.
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName().name()))
                 .collect(Collectors.toList());

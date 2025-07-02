@@ -14,11 +14,6 @@ import java.util.Map;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Kullanıcı işlemleri için REST API denetleyicisi.
- * Bu sınıf "Thin Controller" prensibine uygun olarak tasarlanmıştır.
- * Görevi, HTTP isteklerini doğrulamak ve ilgili iş mantığı için UserService'e devretmektir.
- */
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "https://staj-projem-frontend-b7gufmg4bvcgcxbu.polandcentral-01.azurewebsites.net")
@@ -30,43 +25,24 @@ public class UserController {
         this.userService = userService;
     }
 
-    /**
-     * Dashboard için tüm kullanıcıların halka açık profil bilgilerini getirir.
-     * URL: GET /api/users
-     */
     @GetMapping
     public ResponseEntity<List<UserViewDto>> getAllPublicUsers() {
         List<UserViewDto> users = userService.getAllPublicUserViews();
         return ResponseEntity.ok(users);
     }
 
-    /**
-     * AÇIKLAMA: Bu endpoint, bir başkasının genel profilini görüntülemek için kullanılır.
-     * URL: GET /api/users/{username}
-     * Güvenlik ve gizlilik kontrolleri Service katmanında yapılır.
-     */
     @GetMapping("/{username}")
     public ResponseEntity<UserViewDto> getPublicUserProfile(@PathVariable String username) {
         UserViewDto userViewDto = userService.getPublicUserProfileByUsername(username);
         return ResponseEntity.ok(userViewDto);
     }
 
-    /**
-     * YENİ: Bu endpoint, o an giriş yapmış kullanıcının kendi profilini
-     * düzenleme formunda göstermek için gerekli verileri çeker.
-     * URL: GET /api/users/me
-     */
     @GetMapping("/me")
     public ResponseEntity<ProfileUpdateDto> getProfileForEditing(Authentication authentication) {
         ProfileUpdateDto profileData = userService.getProfileForEditing(authentication.getName());
         return ResponseEntity.ok(profileData);
     }
 
-    /**
-     * Belirli bir kullanıcının profil bilgilerini günceller.
-     * Güvenlik kontrolü (sadece kendi profilini güncelleyebilme) Service katmanında yapılır.
-     * URL: PUT /api/users/{username}
-     */
     @PutMapping("/{username}")
     public ResponseEntity<UserViewDto> updateUserProfile(
             @PathVariable String username,
@@ -77,11 +53,6 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
-    /**
-     * Belirtilen kullanıcı için bir profil fotoğrafı yükler.
-     * Güvenlik kontrolü Service katmanında yapılır.
-     * URL: POST /api/users/{username}/photo
-     */
     @PostMapping("/{username}/photo")
     public ResponseEntity<Map<String, String>> uploadProfilePhoto(
             @PathVariable String username,

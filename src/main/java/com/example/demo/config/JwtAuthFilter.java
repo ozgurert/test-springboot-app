@@ -34,11 +34,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         final String requestURI = request.getRequestURI();
 
-        // --- YENİ: KANIT TOPLAMAK İÇİN LOGLAMA ---
-        // Gelen isteğin yolunu ve if koşulunun sonucunu konsola yazdıralım.
         boolean isPublicPath = requestURI.startsWith("/api/auth/");
         System.out.println("Gelen İstek URI: " + requestURI + " --- Herkese Açık Yol mu?: " + isPublicPath);
-        // ----------------------------------------
 
         if (isPublicPath) {
             filterChain.doFilter(request, response);
